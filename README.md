@@ -135,3 +135,27 @@ If you find our code or models useful in your work, please cite [our paper](http
   url = {https://www.sciencedirect.com/science/article/pii/S0262885624003858}
 }
 ```
+
+
+## Deploy to AgileX Piper (ROS Noetic)
+
+Ground4Act control scripts now support parameterized MoveIt group/frame/gripper action so you can run them on Piper.
+
+1. Clone and build `piper_ros` (noetic branch):
+   - https://github.com/agilexrobotics/piper_ros/tree/noetic
+2. Ensure Piper MoveIt launches correctly and you can execute a simple joint trajectory.
+3. Load adapter params before `moveitServer.py`:
+
+```bash
+rosparam load src/gjt_ur_moveit_gazebo/config/piper_adapter_params.yaml
+python src/gjt_ur_moveit_gazebo/gazebo_scripts/moveitServer.py
+```
+
+4. Update the following keys for your real Piper setup:
+   - `arm_group_name`
+   - `home_joint_values`
+   - `gripper_action_ns`
+   - `gripper_joint_name`
+   - `work_surface_z` / offsets
+
+After these are set, the existing `moveit_grasp` service workflow (push/grasp/reset) can be reused directly on Piper.
